@@ -269,19 +269,30 @@ INSERT INTO tb_sys_questions values(default,2,'Does the anganwadi have a black b
 INSERT INTO tb_sys_questions values(default,2,'Does the preschool have enough teaching and learning materials to keep the children engaged?','angq23','radio','{"Available and used", "Available but not used","Not available","Unknown"}');
 INSERT INTO tb_sys_questions values(default,2,'Are the children using the play materials in the preschool?','angq24','radio','{"Yes","No","Do Not Know"}');
 
-
-
-
-
 DROP TABLE IF EXISTS "tb_sys_images";
 CREATE TABLE "tb_sys_images" (
   "schoolid" integer,
-  "filename" varchar(100),
-  "image" bytea,
+  "original_file" varchar(100),
+  "hash_file" varchar(100),
+  "verified" varchar(1),
   "sysid" integer NOT NULL references "tb_sys_data" ("id") on delete cascade
 );
 
-
+DROP TABLE IF EXISTS "tb_school_info";
+CREATE TABLE "tb_school_info"(
+  "schoolid" integer,
+  "address" varchar(255),
+  "area" varchar(100),
+  "postcode" varchar(100),
+  "landmark_1" varchar (100),
+  "landmark_2" varchar (100),
+  "inst_id_1" varchar (100),
+  "inst_id_2" varchar (100),
+  "bus_no" varchar (100),
+  "mp" varchar(100),
+  "mla" varchar(100),
+  "ward" varchar(100)
+);
 -- Remote views via dblink
 
 CREATE OR REPLACE VIEW vw_boundary_coord as 
@@ -312,9 +323,10 @@ GRANT SELECT ON tb_school,
                 tb_school_info,
                 tb_sys_data,
                 tb_sys_questions, 
+                tb_sys_images,
                 vw_boundary_coord, 
                 vw_inst_coord 
 TO web;
 
-GRANT UPDATE ON tb_sys_data,tb_sys_data_id_seq TO web;
+GRANT UPDATE ON tb_sys_data,tb_sys_images,tb_sys_data_id_seq TO web;
 GRANT INSERT ON tb_sys_data,tb_sys_images,tb_sys_qans TO web;
