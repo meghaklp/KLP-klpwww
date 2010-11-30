@@ -1,0 +1,8 @@
+exclude
+conf
+importers
+pkgs
+mods
+log
+run
+.git
