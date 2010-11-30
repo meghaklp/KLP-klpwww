@@ -32,17 +32,18 @@ $def with (data)
  </head> 
  <body class="yui3-skin-sam" onload="initialise($data)" id="top"> 
     <h1 id="tabview-heading">Assessments</h1>
+    <div style="width:1100px">
     <div id="school" style="display:none">
      <ul>
         <li><a href="#school-enrollment">Enrollment</a></li>
         <li><a href="#school-baselinedata">BaseLine Data</a></li>
-        <li><a href="#school-progress">Progress Data</a></li>
+        <li><a href="#school-progress" id="school-progress-tab" style="display:none">Progress Data</a></li>
         <li><a href="#school-analytics">Analytics</a></li>
     </ul>
     <div>
       <div id="school-enrollment" style="height:500px">
       </div>
-      <div id="school-baselinedata" style="height:1100px">
+      <div id="school-baselinedata" style="height:1200px">
         <ul>
           <li><a href="#school-baseline-general">General</a></li>
           <br>
@@ -53,39 +54,37 @@ $def with (data)
           <li><a href="#school-baseline-class">By Class Performance</a></li>
         </ul>
         <br>
-        <hr/>
         <div id="school-baseline-general" class="leftContent">
-          <p align="right"><a href="#top">Back to Top</a></p>
-          <p align="center"><b>General</b></p>
+          <p align="left"><b>General</b></p>
           <div id="school-general-content" style="height:300px; width:300px"></div>
         </div> 
         <div id="school-baseline-gender" class="rightContent">
-          <p align="right"><a href="#top">Back to Top</a></p>
-          <p align="center"><b>Gender</b></p>
-          <div id="school-gender-content" class="leftside" style="height:300px; width:300px"></div>
-          <div id="school-gender-legend" class="rightside"></div>
+          <p align="left"><b>Gender</b></p>
+          <div id="school-gender-legend" class="rightside">Legend<div id="school-gender-legend-content"></div></div>
+          <div id="school-gender-content" class="leftside" style="height:300px; width:400px"></div>
         </div> 
+        <div class="midcontent"><p align="center"><a href="#top">Back to Top</a></p></div>
         <div id="school-baseline-mt" class="leftContent">
-          <p align="right"><a href="#top">Back to Top</a></p>
-          <p align="center"><b>Mother Tongue</b></p>
-          <div id="school-mt-content"  class="leftside" style="height:300px; width:300px"></div>
-          <div id="school-mt-legend" class="rightside"></div>
+          <p align="left"><b>Mother Tongue</b></p>
+          <div id="school-mt-legend" class="rightside">Legend<div id="school-mt-legend-content"></div></div>
+          <div id="school-mt-content"  class="leftside" style="height:300px; width:400px"></div>
         </div> 
         <div id="school-baseline-class" class="rightContent">
-          <p align="right"><a href="#top">Back to Top</a></p>
-          <p align="center"><b>Class Performance</b></p>
-          <div id="school-class-content" class="leftside" style="height:300px; width:300px"></div>
-          <div id="school-class-legend" class="rightside"></div>
+          <p align="left"><b>Class Performance</b></p>
+          <div id="school-class-legend" class="rightside">Legend<div id="school-class-legend-content"></div></div>
+          <div id="school-class-content" class="leftside" style="height:300px; width:400px"></div>
         </div> 
         <br>
         <br>
       </div>
-      <div id="school-progress" style="height:450px; width:700px" align="center">
+      <div id="school-progress" style="height:500px;width:900px">
       </div>
-      <div id="school-analytics" style="height:1100px">
+      <div id="school-analytics" style="height:1200px">
       </div>
     </div>
     </div>
+    </div>
+    <div style="width:1100px">
     <div id="preschool" style="display:none">
      <ul>
         <li><a href="#preschool-enrollment">Enrollment</a></li>
@@ -95,7 +94,7 @@ $def with (data)
     <div>
       <div id="preschool-enrollment" style="height:500px; width:500px">
       </div>
-      <div id="preschool-baselinedata" style="height:1100px">
+      <div id="preschool-baselinedata" style="height:1200px">
         <ul>
           <li><a href="#preschool-baseline-gender">Average Score By Gender</a></li>
           <br>
@@ -103,28 +102,26 @@ $def with (data)
           <br>
         </ul>
       <br>
-      <hr/>
       <div id="preschool-baseline-gender" class="leftContent">
-      <p align="right"><a href="#top">Back to Top</a></p>
-      <p align="center"><b>Average Score by Gender</b></p>
-      <div id="preschool-gender-content" class="leftside" style="height:300px; width:300px"></div>
-        <div id="preschool-gender-legend" class="rightside"></div>
+        <p align="left"><b>Average Score by Gender</b></p>
+        <div id="preschool-gender-legend" class="rightside"><div id="preschool-gender-legend-content"></div></div>
+        <div id="preschool-gender-content" class="leftside" style="height:300px; width:400px"></div>
       </div> 
       <div id="preschool-baseline-mt" class="rightContent">
-      <p align="right"><a href="#top">Back to Top</a></p>
-      <p align="center"><b>Average Score by Mother Tongue</b></p>
-      <div id="preschool-mt-content"  class="leftside" style="height:300px; width:300px"></div>
-        <div id="preschool-mt-legend" class="rightside"></div>
+        <p align="left"><b>Average Score by Mother Tongue</b></p>
+        <div id="preschool-mt-legend" class="rightside">Legend<div id="preschool-mt-legend-content"></div></div>
+        <div id="preschool-mt-content"  class="leftside" style="height:300px; width:400px"></div>
       </div> 
       <br>
       <br>
       </div>
-      <div id="preschool-progress" style="height:450px;width:700px" align="center">
+      <div id="preschool-progress"  style="height:500px;widht:900px">
       </div>
     </div>
     </div>
-
-    <div id="boundary" style="display:none">
+    </div>
+    <div style="width:1100px">
+    <div id="boundary" style="display:none" class="tab">
      <ul>
         <li><a href="#boundary-enrollment">Enrollment</a></li>
         <li><a href="#boundary-baselinedata">BaseLine Data</a></li>
@@ -133,7 +130,7 @@ $def with (data)
     <div>
       <div id="boundary-enrollment" style="height:500px; width:500px">
       </div>
-      <div id="boundary-baselinedata" style="height:1100px">
+      <div id="boundary-baselinedata" style="height:1200px">
         <ul>
           <li><a href="#boundary-baseline-general">General</a></li>
           <br>
@@ -145,36 +142,33 @@ $def with (data)
           <br>
         </ul>
       <br>
-      <hr/>
       <div id="boundary-baseline-general" class="leftContent">
-        <p align="right"><a href="#top">Back to Top</a></p>
-        <p align="center"><b>General</b></p>
-        <div id="boundary-general-content" style="height:300px; width:300px"></div>
+        <p align="left"><b>General</b></p>
+        <div id="boundary-general-content" style="height:300px; width:400px"></div>
       </div> 
       <div id="boundary-baseline-gender" class="rightContent">
-      <p align="right"><a href="#top">Back to Top</a></p>
-      <p align="center"><b>Gender</b></p>
-      <div id="boundary-gender-content" class="leftside" style="height:300px; width:300px"></div>
-        <div id="boundary-gender-legend" class="rightside"></div>
+        <p align="left"><b>Gender</b></p>
+        <div id="boundary-gender-legend" class="rightside">Legend<div id="boundary-gender-legend-content"></div></div>
+        <div id="boundary-gender-content" class="leftside" style="height:300px; width:400px"></div>
       </div> 
+      <div class="midcontent"><p align="center"><a href="#top">Back to Top</a></p></div>
       <div id="boundary-baseline-mt" class="leftContent">
-      <p align="right"><a href="#top">Back to Top</a></p>
-      <p align="center"><b>Mother Tongue</b></p>
-      <div id="boundary-mt-content"  class="leftside" style="height:300px; width:300px"></div>
-        <div id="boundary-mt-legend" class="rightside"></div>
+        <p align="left"><b>Mother Tongue</b></p>
+        <div id="boundary-mt-legend" class="rightside">Legend<div id="boundary-mt-legend-content"></div></div>
+        <div id="boundary-mt-content"  class="leftside" style="height:300px; width:400px"></div>
       </div> 
       <div id="boundary-baseline-class" class="rightContent">
-      <p align="right"><a href="#top">Back to Top</a></p>
-      <p align="center"><b>Class</b></p>
-      <div id="boundary-class-content"  class="leftside" style="height:300px; width:300px"></div>
-        <div id="boundary-class-legend" class="rightside"></div>
+        <p align="left"><b>Class</b></p>
+        <div id="boundary-class-legend" class="rightside">Legend<div id="boundary-class-legend-content"></div></div>
+        <div id="boundary-class-content"  class="leftside" style="height:300px; width:400px"></div>
       </div> 
       <br>
       <br>
       </div>
-      <div id="boundary-progress" style="height:450px;width:700px" align="center">
+      <div id="boundary-progress" style="height:500px;width:900px">
       </div>
     </div>
+    <div>
     </div>
  </body> 
 </html> 

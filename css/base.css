@@ -213,5 +213,32 @@ body { background-image: url(../images/parchment-tile.png);}
 	margin-bottom: 0px;
 	margin-left: 0px;
 	}
+
+div.mapSet5{
+	float: left;
+	
+	width: 100px;
+	height: 100px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	}
+
+a.footerlink{
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 8pt ! important
+	}
 	
 /* End of Footer Style */

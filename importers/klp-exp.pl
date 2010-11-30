@@ -32,29 +32,68 @@ sub make_csv {
     close $fh or die "$fname: $!";
 }
 
+my %q_map = (
+  133, 7, #2009 NNG
+  134, 7,
+  135, 7,
+  136, 7,
+
+  125,21, #Ramanagara NNG1
+  126,21,
+  127,21,
+  128,21,
+
+  129,23, #Ramanagara NNG2
+  130,23,
+  131,23,
+  132,23
+);
+
+
+my %ignore_qmap = (
+    18, 5,
+    19, 6
+);
+
+
 # The domain of the map is from the seed data in the schema
 # creation script for tb_assessment
 my %exam_map = (
-    34, 17,                 # English
-    40, 18,
-    28, 3,                  # 2007 NNG
-    29, 4,
-    26, 5,                  # 2008 NNG
-    27, 6,
-    33, 7,                  # 2009 NNG
-    36, 8,
     22, 9,                  # 2006 Reading
     23, 10,
     24, 11,
     25, 12,
-    # 15, 15,                 # 2009 Reading
-    # 16, 16,
+
+    28, 3,                  # 2007 NNG
+    29, 4,
+
+    26, 5,                  # 2008 NNG
+    18, 5,
+    27, 6,
+    19, 6,
+
+    #15,13,                  #2008 Reading (11 districts)
+    #16,14,
+
+    33, 7,                  # 2009 NNG
+    36, 8,
+
+    34, 19,                 # English
+    40, 20,
+
     30, 1,                  # 2009 Anganwadi
     37, 2,
-    44, 20,                 # 2009 NNG1 Ramanagara
-    45, 22,                 # 2009 NNG2 Ramanagara
-    38, 23,                 # Target
-    39, 24
+
+    38, 25,                 # Target NNG
+    39, 26,                 # Target Reading
+
+    44, 22,                 # 2009 NNG1 Ramanagara
+    45, 24,                 # 2009 NNG2 Ramanagara
+
+    #15, 15,                 # 2009 Reading
+    #16, 16,
+    43, 17,
+    35, 18
 );
 
 sub make_assess_csv {
@@ -68,7 +107,23 @@ sub make_assess_csv {
     open my $fh, ">:encoding(utf8)", $fname or die "$fname: $!";
     while (my $row = $sth->fetchrow_arrayref) {
         next unless(exists $exam_map{$row->[$col]});
-        $row->[$col] = $exam_map{$row->[$col]};
+        if ( index($fname,"question") != -1 )#only questions to be ignored
+        {
+          print STDERR "Question query $row->[$col]";
+          if( exists $ignore_qmap{$row->[$col]} ) 
+          {
+            print STDERR "skipping";
+            next;
+          }
+        }
+        if ( exists $q_map{$row->[0]} )
+        {
+          $row->[$col]=$q_map{$row->[0]};
+        }
+        else
+        { 
+          $row->[$col] = $exam_map{$row->[$col]};
+        }
         $csv->print($fh, $row);
     }
     close $fh or die "$fname: $!";
@@ -121,7 +176,7 @@ select s.id as id,
      s.addressid as aid,
      trim(s.schoolcode) as dise_code,
      trim(s.schoolname) as name,
-     case when sc.category_desc = 'Lower Primary' then 'lps' else 'hps' end as cat,
+     trim(sc.category_desc) as cat,
      null as sex,
      lower(trim(i.medium_name)) as moi,
      null as mgmt
@@ -181,7 +236,8 @@ from egems_student stu
  query => q{
 select scg.studentid as stuid,
        scg.studentgroupid as clid,
-       scg.academicyearid as aid
+       scg.academicyearid as aid,
+       stu.statusid as status
 from egems_studentgroup sg,
      egems_schstu_association scg,
      egems_student stu
@@ -189,7 +245,6 @@ where
      sg.groupid = 1
      and sg.studentgroupid = scg.studentgroupid
      and scg.studentid = stu.studentid
-     and stu.statusid = 1
 }},
 );
 my $loadfile = 'load/load.sql';

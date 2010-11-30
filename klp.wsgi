@@ -23,12 +23,14 @@ urls = (
      '/info/school/(.*)','getSchoolInfo',
      '/info/preschool/(.*)','getSchoolInfo',
      '/shareyourstory(.*)\?*','shareyourstory',
+     '/schoolpage/(.*)/(.*)','schoolpage',
      '/info/(.*)/(.*)','getBoundaryInfo',
      '/boundaryPoints/(.*)/(.*)','getBoundaryPoints',
      '/text/(.+)', 'text',
      '/schoolInfo/(.*)','getSchoolBoundaryInfo',
      '/insertsys/(.*)','insertSYS',
      '/postSYS/(.*)','postSYS',
+     '/sysinfo','getSYSInfo',
 )
 
 connection = Utility.KLPDB.getConnection()
@@ -100,7 +102,7 @@ myPreSchoolform =form.Form(
                    form.File('file5'),
                    form.Textarea('comments'))
 
-baseassess = {"1":1,"2":3,"3":5,"4":7,"5":9,"6":13,"7":15,"8":17,"9":19,"10":21}
+baseassess = {"1":1,"2":3,"3":5,"4":7,"5":9,"6":13,"7":15,"8":19,"9":21,"10":23,"11":25,"12":26}
 
 statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='District' and b.id=bcoord.id_bndry order by b.name",
               'get_preschooldistrict':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='PreSchoolDistrict' and b.id=bcoord.id_bndry order by b.name",
@@ -208,6 +210,12 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_assessmentinfo_district':"select b.name,sum(agg.aggval) from tb_school_assess_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b.id = %s group by b.name",
               'get_assessmentinfo_block':"select b1.name,sum(agg.aggval) from tb_school_assess_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b1.id = %s group by b1.name",
               'get_assessmentinfo_cluster':"select b2.name,sum(agg.aggval) from tb_school_assess_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b2.id = %s group by b2.name",
+              'get_school_info':"select b.name, b1.name, b2.name, s.name,h.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
+              'get_school_address_info':"select info.address,info.area,info.postcode,info.landmark_1,info.landmark_2,info.inst_id_1,info.inst_id_2, info.bus_no,info.images from tb_school_info info where info.schoolid=%s",
+              'get_sys_info':"select sys.dateofvisit from tb_sys_data sys where sys.schoolid=%s group by sys.dateofvisit",
+              'get_school_point':"select ST_AsText(inst.coord) from vw_inst_coord inst where inst.instid=%s",
+              'get_sys_nums':"select count(*) from tb_sys_data",
+              'get_sys_image_nums':"select count(*) from tb_sys_images",
 }
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
@@ -225,16 +233,23 @@ class getPointInfo:
   def GET(self,type):
     pointInfo= []
     try:
+      #print >> sys.stderr, "Executing :get_"+type
       cursor.execute(statements['get_'+type])
       result = cursor.fetchall()
       for row in result:
-        match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+        try:
+          match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+        except:
+          print >> sys.stderr, type+" "+str(row)+" "+str(result)
+          traceback.print_exc(file=sys.stderr)
+          continue
         lon = match.group(1)
         lat = match.group(2)
         data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
         pointInfo.append(data)
       connection.commit()
     except:
+      print >> sys.stderr, type
       traceback.print_exc(file=sys.stderr)
       connection.rollback()
     web.header('Content-Type', 'application/json')
@@ -246,16 +261,23 @@ class getSchoolPointInfo:
     """get coordinates of all the schools"""
     schools= []
     try:
+      #print >> sys.stderr, "Executing :get_"+type+"schools"
       cursor.execute(statements['get_'+type+'schools'])
       result = cursor.fetchall()
       for row in result:
-        match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+        try:
+          match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+        except:
+          print >> sys.stderr, str(row)+" "+str(result)
+          traceback.print_exc(file=sys.stderr)
+          continue
         lon = match.group(1)
         lat = match.group(2)
         data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
         schools.append(data)
       connection.commit()
     except:
+      print >> sys.stderr, type
       traceback.print_exc(file=sys.stderr)
       connection.rollback()
     web.header('Content-Type', 'application/json')
@@ -266,6 +288,29 @@ class visualization:
     web.header('Content-Type','text/html; charset=utf-8')
     return render.visualization()
 
+
+
+class getSYSInfo:
+  def GET(self):
+    sysinfo={"numstories":0,"numimages":0}
+    try:
+      cursor.execute(statements['get_sys_nums'])
+      result = cursor.fetchall()
+      for row in result:
+        sysinfo["numstories"]=int(row[0])
+      cursor.execute(statements['get_sys_image_nums'])
+      result = cursor.fetchall()
+      for row in result:
+        sysinfo["numimages"]=int(row[0])
+      connection.commit()
+    except:
+      traceback.print_exc(file=sys.stderr)
+      connection.rollback()
+    web.header('Content-Type', 'application/json')
+    return jsonpickle.encode(sysinfo)
+
+    
+
 class assessments:
   def GET(self,type,pid,id):
     data={}
@@ -273,10 +318,10 @@ class assessments:
       if pid == "1":
         assess = anganwadiAssessment(type,pid,id)
         data = assess.getData()
-      elif pid == "2" or pid =="3" or pid=="4" or pid=="9" or pid=="10":
+      elif pid == "2" or pid =="3" or pid=="4" or pid=="9" or pid=="10" or pid=="11":
         assess= nngAssessment(type,pid,id)
         data = assess.getData()
-      elif pid =="5" or pid=="6" or pid=="7":
+      elif pid =="5" or pid=="6" or pid=="7" or pid=="12":
         assess= readingAssessment(type,pid,id)
         data = assess.getData()
       elif pid=="8":
@@ -435,12 +480,13 @@ class baseAssessment:
         cursor.execute(statements['get_'+self.type+'_assessmentclass'],(self.pid,baseassess[self.pid],self.id,))
         result = cursor.fetchall()
         for row in result:
-           if not row[0] in self.data["baseline"]["class"]:
-              self.data["baseline"]["class"][row[0]]={}
+           std= "class-"+str(row[0])
+           if not std in self.data["baseline"]["class"]:
+              self.data["baseline"]["class"][std]={}
            if row[2]==0:
-             self.data["baseline"]["class"][row[0]][row[1]]=0
+             self.data["baseline"]["class"][std][row[1]]=0
            else:
-             self.data["baseline"]["class"][row[0]][row[1]]=(float(row[2])/float(self.count[row[0]]))*100.0
+             self.data["baseline"]["class"][std][row[1]]=(float(row[2])/float(self.count[row[0]]))*100.0
       except:
         traceback.print_exc(file=sys.stderr)
         connection.rollback()
@@ -486,7 +532,7 @@ class baseAssessment:
       temp={}
       timeArray=[]
 
-      name=self.data["name"].capitalize()+"(School)"
+      name=self.data["name"].capitalize()+" (School)"
       try:
         cursor.execute(statements['get_progress_school'],(self.pid,self.id,))
         result = cursor.fetchall()
@@ -513,7 +559,7 @@ class baseAssessment:
           cursor.execute(statements['get_progress_'+boundary],(self.pid,boundaries[boundary],))
           result = cursor.fetchall()
           for row in result:
-            bname=row[0].capitalize()+"("+boundary.capitalize()+")"
+            bname=row[0].capitalize()+" ("+boundary.capitalize()+")"
             if not row[2] in temp:
               temp[row[2]]={}
             if not bname in temp[row[2]]:
@@ -617,6 +663,90 @@ class englishAssessment(baseAssessment):
       connection.commit()
       return self.data
 
+class schoolpage:
+  def GET(self,type,id):
+    data={'name':'','type':'','id':'','sysdate':[]}
+    data["type"]=str(type)
+    data["id"]=int(id)
+    try:
+      cursor.execute(statements['get_school_info'],(id,))
+      result = cursor.fetchall()
+      for row in result:
+        data["b"]=row[0].capitalize()
+        data["b1"]=row[1].capitalize()
+        data["b2"]=row[2].capitalize()
+        data["name"]=row[3].capitalize()
+        if row[4]==None:
+          data["type"]='-'
+        else:
+          data["type"]=row[4]
+        if row[5]==None:
+          data["cat"]='-'
+        else:
+          data["cat"]=row[5].upper()
+        if row[6]==None:
+          data["sex"]='-'
+        else:
+          data["sex"]=row[6].capitalize()
+        if row[7]==None:
+          data["moi"]='-'
+        else:
+          data["moi"]=row[7].capitalize()
+        if row[8]==None:
+          data["mgmt"]='-'
+        else:
+          data["mgmt"]=row[8].capitalize()
+        if row[9]==None:
+          data["dise_code"]='-'
+        else:
+          data["dise_code"]=row[9]
+      cursor.execute(statements['get_school_address_info'],(id,))
+      result = cursor.fetchall()
+      data["address"]='-'
+      for row in result:
+        data["address"]=row[0]
+        data["area"]=row[1]
+        data["postcode"]=row[2]
+        data["landmark_1"]=row[3]
+        data["landmark_2"]=row[4]
+        data["inst_id_1"]=row[5]
+        data["inst_id_2"]=row[6]
+        data["bus_no"]=row[7]
+        data["images"]=row[8]
+
+      cursor.execute(statements['get_school_gender'],(id,))
+      result = cursor.fetchall()
+      for row in result:
+        if row[1] == "female":
+          data["numGirls"]=int(row[2])
+        if row[1] == "male":
+          data["numBoys"]=int(row[2])
+
+      data["numStudents"]= data["numBoys"]+data["numGirls"]
+
+      cursor.execute(statements['get_sys_info'],(id,))
+      result = cursor.fetchall()
+      data["syscount"]=0
+      for row in result:
+        data["syscount"]=data["syscount"]+1
+        if row[0]==None:
+          data["sysdate"].append('')
+        else:
+          data["sysdate"].append(str(row[0]))
+
+      cursor.execute(statements['get_school_point'],(id,))
+      result = cursor.fetchall()
+      for row in result:
+        match = re.match(r"POINT\((.*)\s(.*)\)",row[0])
+        data["lon"] = match.group(1)
+        data["lat"] = match.group(2)
+    except:
+      traceback.print_exc(file=sys.stderr)
+      connection.rollback()
+
+    print >> sys.stderr, data
+    web.header('Content-Type','text/html; charset=utf-8')
+    return render_plain.schoolpage(data)
 
 class shareyourstory:
   def GET(self,type):
@@ -636,7 +766,7 @@ class shareyourstory:
 class text:
   def GET(self, name):
     web.header('Content-Type','text/html; charset=utf-8')
-    textlinks = {'library': 'library', 'maths': 'maths', 'preschool': 'preschool', 'reading': 'reading', 'partners': 'partners'}
+    textlinks = {'library': 'library', 'maths': 'maths', 'preschool': 'preschool', 'reading': 'reading', 'partners': 'partners','aboutus':'aboutus','credits':'credits'}
 
     try:
       return eval('render.' + textlinks[name] + '()')
@@ -867,3 +997,5 @@ class postSYS:
 
     web.header('Content-Type','text/html; charset=utf-8')
     return render_plain.sys_submitted()
+   
+

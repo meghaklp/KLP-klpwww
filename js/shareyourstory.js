@@ -123,11 +123,11 @@ function populateInfo(info)
 {
     if(info.type==1)
     {
-      document.getElementById("schoolInfo").innerHTML= '<table id=\"schoolInfo\" border=1 width="30%"><tr><td><b>State</b></td><td>Karnataka</td></tr><tr><td><b>District</b></td><td>'+info.district+'</td></tr><tr><td><b>Block</b></td><td>'+info.block+'</td></tr><tr><td><b>Cluster</b></td><td>'+info.cluster+'</td></tr><tr><td><b>School Name</b></td><td>'+info.schoolname+'</td></tr></table>';
+      document.getElementById("schoolInfo").innerHTML= '<table id=\"schoolInfo\" border=1 width="30%"><tr><td><b>State</b></td><td>Karnataka</td></tr><tr><td><b>District</b></td><td>'+info.district+'</td></tr><tr><td><b>Block</b></td><td>'+info.block+'</td></tr><tr><td><b>Cluster</b></td><td>'+info.cluster+'</td></tr><tr><td><b>School Name</b></td><td>'+info.schoolname.toUpperCase()+'</td></tr></table>';
     }
     else
     {
-      document.getElementById("schoolInfo").innerHTML= '<table id=\"schoolInfo\" border=1 width="30%"><tr><td><b>State</b></td><td>Karnataka</td></tr><tr><td><b>District</b></td><td>'+info.district+'</td></tr><tr><td><b>Project</b></td><td>'+info.block+'</td></tr><tr><td><b>Circle</b></td><td>'+info.cluster+'</td></tr><tr><td><b>Preschool Name</b></td><td>'+info.schoolname+'</td></tr></table>';
+      document.getElementById("schoolInfo").innerHTML= '<table id=\"schoolInfo\" border=1 width="30%"><tr><td><b>State</b></td><td>Karnataka</td></tr><tr><td><b>District</b></td><td>'+info.district+'</td></tr><tr><td><b>Project</b></td><td>'+info.block+'</td></tr><tr><td><b>Circle</b></td><td>'+info.cluster+'</td></tr><tr><td><b>Preschool Name</b></td><td>'+info.schoolname.toUpperCase()+'</td></tr></table>';
     }
 }
 

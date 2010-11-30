@@ -3,10 +3,11 @@ $def with (questions)
   <head>
     <title>Share Your Story</title>
     <link type="text/css" rel="stylesheet" href="/css/sys.css"/>
-  <link type="text/css" rel="stylesheet" href="/yui/build/cssfonts/fonts-min.css"/>
-  <script type="text/javascript" src="/yui/build/yui/yui-min.js"></script>
-  <script type="text/javascript" src="/js/shareyourstory.js"></script>
-  <style type="text/css" id="styleoverrides">
+    <link type="text/css" rel="stylesheet" href="/css/printsys.css" media="print"/>
+    <link type="text/css" rel="stylesheet" href="/yui/build/cssfonts/fonts-min.css"/>
+    <script type="text/javascript" src="/yui/build/yui/yui-min.js"></script>
+    <script type="text/javascript" src="/js/shareyourstory.js"></script>
+    <style type="text/css" id="styleoverrides">
 #cal1Cont {
     width: 128px;
 }
@@ -104,19 +105,21 @@ $def with (questions)
     <textarea name="comments" id="comments" style="width:80%" rows="5"></textarea>
     <br/>
     <br/>
-    <b>Upload Photos:-</b>
-    <br/>
-    <div id="image-inputs">
-      <p><input type="file" name="file1"></p>
-      <p><input type="file" name="file2"></p>
-      <p><input type="file" name="file3"></p>
-      <p><input type="file" name="file4"></p>
-      <p><input type="file" name="file5"></p>
+    <div id="photos">
+      <b>Upload Photos:-</b>
+      <br/>
+      <div id="image-inputs">
+        <p><input type="file" name="file1"></p>
+        <p><input type="file" name="file2"></p>
+        <p><input type="file" name="file3"></p>
+        <p><input type="file" name="file4"></p>
+       <p><input type="file" name="file5"></p>
+      </div>
     </div>
     <br/>
     <br/>
-    <div align="left">
-    <input type="submit" value="Submit" class="btn1" style="width:200px;" />
+    <div id="submit" align="left">
+      <input type="submit" value="Submit" class="btn1" style="width:200px;" />
     </div>
   </form>
  </body>

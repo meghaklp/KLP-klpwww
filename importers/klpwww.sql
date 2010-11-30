@@ -34,7 +34,7 @@ CREATE TABLE "tb_address" (
 );
 
 DROP TYPE IF EXISTS school_category cascade;
-CREATE TYPE school_category as enum('lps', 'lps and hps', 'lps, hps and hs', 'hps', 'hps and hs', 'hs', 'hs and puc', 'special', 'chs', 'chps and chs');
+CREATE TYPE school_category as enum('Model Primary', 'Anganwadi', 'Akshara Balwadi', 'Independent  Balwadi', 'Others', 'Lower Primary', 'Upper Primary', 'Secondary');
 DROP TYPE IF EXISTS school_sex cascade;
 CREATE TYPE school_sex as enum('boys','girls','co-ed');
 DROP TYPE IF EXISTS sex cascade;
@@ -43,6 +43,7 @@ DROP TYPE IF EXISTS school_moi cascade;
 CREATE TYPE school_moi as enum('kannada','urdu','tamil','telugu','english','marathi','malayalam', 'hindi', 'konkani', 'sanskrit', 'sindhi', 'other', 'gujarathi', 'not known', 'english and marathi', 'multi lng', 'nepali', 'oriya', 'bengali', 'english and hindi', 'english, telugu and urdu');  -- 'Medium of instruction
 DROP TYPE IF EXISTS school_management cascade;
 CREATE TYPE school_management as enum('ed', 'swd', 'local', 'p-a', 'p-ua', 'others', 'approved', 'ssa', 'kgbv', 'p-a-sc', 'p-a-st', 'jawahar', 'central', 'sainik', 'central govt', 'nri', 'madrasa-a', 'madrasa-ua', 'arabic-a', 'arabic-ua', 'sanskrit-a', 'sanskrit-ua', 'p-ua-sc', 'p-ua-st');
+
 
 DROP TABLE IF EXISTS "tb_school" cascade;
 CREATE TABLE "tb_school" (
@@ -96,7 +97,8 @@ DROP TABLE IF EXISTS "tb_student_class" cascade;
 CREATE TABLE "tb_student_class" (
   "stuid" integer NOT NULL REFERENCES "tb_student" ("id") ON DELETE CASCADE, -- 'Student id'
   "clid" integer NOT NULL REFERENCES "tb_class" ("id") ON DELETE CASCADE, -- 'Class id'
-  "ayid" integer NOT NULL REFERENCES "tb_academic_year" ("id") ON DELETE CASCADE
+  "ayid" integer NOT NULL REFERENCES "tb_academic_year" ("id") ON DELETE CASCADE,
+  "status" integer NOT NULL
 );
 
 DROP TABLE IF EXISTS "tb_programme" cascade;
@@ -114,13 +116,13 @@ insert into tb_programme values (default, 'Anganwadi', '2009-06-01', '2020-05-31
                                 (default, 'NNG', '2008-06-01', '2009-05-31'),
                                 (default, 'NNG3', '2009-06-01', '2010-05-31'),
                                 (default, 'Reading', '2006-06-01', '2007-05-31'),
-                                (default, 'ಪರಿಹರ ಬೊಧನೆ', '2008-06-01', '2009-05-31'),
+                                (default, 'Reading', '2008-06-01', '2009-05-31'),
                                 (default, 'Reading', '2009-06-01', '2010-05-31'),
                                 (default, 'English', '2009-06-01', '2010-05-31'),
                                 (default, 'Ramanagara-NNG1', '2009-06-01', '2010-05-31'),
                                 (default, 'Ramanagara-NNG2', '2009-06-01', '2010-05-31'),
-                                (default, 'Target', '2009-06-01', '2010-05-31'),
-                                (default, 'SSLC', default, default);
+                                (default, 'Target NNG', '2009-06-01', '2010-05-31'),
+                                (default, 'Target Reading', '2009-06-01', '2010-05-31');
 
 DROP TABLE IF EXISTS "tb_assessment" cascade;
 CREATE TABLE "tb_assessment" (
@@ -150,24 +152,27 @@ insert into tb_assessment values (default, 'Baseline', 5, '2006-07-1', '2006-08-
                                  (default, '15th day test', 5, '2006-09-1', '2006-10-01'), --10
                                  (default, '30th day test', 5, '2006-10-1', '2006-11-01'), --11
                                  (default, '45th day test', 5, '2006-11-1', '2006-12-01'); --12
--- 2008 11 districts (ಪರಿಹರ ಬೊಧನೆ)
+-- 2008 11 districts (ಪರಿಹರ ಬೊಧನೆ, Reading)
 insert into tb_assessment values (default, 'Pre test', 6, '2008-10-1', '2009-12-01'), --13
                                  (default, 'Post test', 6, '2009-01-1', '2009-02-01'); --14
 -- 2009 Reading
-insert into tb_assessment values (default, 'Pre test', 7, '2009-10-1', '2009-12-01'), --15
-                                 (default, 'Post test', 7, '2010-01-1', '2010-02-01'); --16
+insert into tb_assessment values (default, 'Pre test', 7, '2009-10-1', '2009-11-01'), --15
+                                 (default, 'Post test', 7, '2010-01-1', '2010-02-01'), --16
+                                 (default, 'Mid test', 7, '2009-11-1', '2009-12-01'), --17
+                                 (default, '20th day', 7, '2009-11-1', '2009-12-01'); --18
 -- 2009 English
-insert into tb_assessment values (default, 'Pre test', 8, '2009-10-1', '2009-12-01'), --17
-                                 (default, 'Post test', 8, '2010-01-1', '2010-02-01'); --18
+insert into tb_assessment values (default, 'Pre test', 8, '2009-10-1', '2009-12-01'), --19
+                                 (default, 'Post test', 8, '2010-01-1', '2010-02-01'); --20
 -- 2009 Ramanagara NNG1
-insert into tb_assessment values (default, 'Pre test', 9, '2009-10-1', '2009-12-01'), --19
-                                 (default, 'Post test', 9, '2010-01-1', '2010-02-01'); --20
--- 2009 Ramanagara NNG2
 insert into tb_assessment values (default, 'Pre test', 9, '2009-10-1', '2009-12-01'), --21
                                  (default, 'Post test', 9, '2010-01-1', '2010-02-01'); --22
--- 2009 Target
-insert into tb_assessment values (default, 'NNG2', 10, '2010-01-1', '2010-02-01'), --23
-                                 (default, 'Reading', 10, '2010-01-1', '2010-02-01'); --24
+-- 2009 Ramanagara NNG2
+insert into tb_assessment values (default, 'Pre test', 10, '2009-10-1', '2009-12-01'), --23
+                                 (default, 'Post test',10, '2010-01-1', '2010-02-01'); --24
+-- 2009 Target NNG
+insert into tb_assessment values (default, 'NNG2', 11, '2010-01-1', '2010-02-01'); --25
+-- 2009 Target Reading
+insert into tb_assessment values (default, 'Reading', 12, '2010-01-1', '2010-02-01'); --26
 
 DROP TABLE IF EXISTS "tb_question" cascade;
 CREATE TABLE "tb_question" (
@@ -304,6 +309,7 @@ GRANT SELECT ON tb_school,
                 tb_child, 
                 tb_student_class,
                 tb_student_eval,
+                tb_school_info,
                 tb_sys_data,
                 tb_sys_questions, 
                 vw_boundary_coord, 

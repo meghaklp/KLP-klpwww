@@ -18,6 +18,37 @@ var defaultid="8877"
 var childInfo=[]
 
 
+function initializesys(){
+  YUI({base: 'yui/build/',
+    timeout: 50000}).use("io-base","json-parse",
+    function(Y, result) {
+      if (!result.success) {
+        Y.log('Load failure: ' + result.msg, 'warn', 'program');
+      }
+      var callback = {
+        on: { success: 
+          function(id, o) {
+            var sysinfo;
+            try {  
+              sysinfo= Y.JSON.parse(o.responseText);
+            } catch (e) {
+              Y.log('Could not parse json'+type, 'error', 'sysinfo');
+              return;
+            }
+            document.getElementById("systext").innerHTML='<p>Number of Stories Shared :'+sysinfo["numstories"]+'</p><p>Number of Photos Shared :'+sysinfo["numimages"]+'</p><br><a href="visualization?type=school">Please Share Your Experience</a>';
+          },
+          failure: function(id, o) {
+            Y.log('Could not retrieve sysinfo data ','error','sysinfo');
+          }  
+        }
+      };
+      url = "sysinfo";
+      var request = Y.io(url, callback);
+    });
+
+}
+
+
 function initialiseSchool(){
   var displayschooldiv="inline";
   var displaypreschooldiv="none";
@@ -293,7 +324,7 @@ function createInfoData(info,type,id,name)
     if (type=="project" || type=="circle" || type=="preschooldistrict")
       schooltext="Preschools"
 
-    tableContent= '<table width=\"245\" border=\"1\" style=\"border-width:1px; border-style:dotted; border-color:#CCCCCC;\"><tr><td colspan=\"2\" align=\"center\"><b>'+initCap(type)+' : '+name+'</b></td></tr><tr><td>Num of '+schooltext+'</td><td align=\"right\">'+numSchools+'</td></tr><tr><td>Num of Girls</td><td align=\"right\">'+info.numGirls+'</td></tr><tr><td>Num of Boys</td><td align=\"right\">'+info.numBoys+'</td></tr><tr><td>Total Students</td><td align=\"right\">'+numStudents+'</td></tr><tr><td>Intervention Programmes</td><td>'+assessmentInfo+'</td></tr><tr><td colspan=\"2\"><font size=\"1\">Source: Akshara Foundation</font</td></tr></table>';
+    tableContent= '<table width=\"245\" border=\"1\" style=\"border-width:1px; border-style:dotted; border-color:#CCCCCC;\"><tr><td colspan=\"2\" align=\"center\"><b>'+initCap(type)+' : '+name.toUpperCase()+'</b></td></tr><tr><td>Num of '+schooltext+'</td><td align=\"right\">'+numSchools+'</td></tr><tr><td>Num of Girls</td><td align=\"right\">'+info.numGirls+'</td></tr><tr><td>Num of Boys</td><td align=\"right\">'+info.numBoys+'</td></tr><tr><td>Total Students</td><td align=\"right\">'+numStudents+'</td></tr><tr><td>Intervention Programmes</td><td>'+assessmentInfo+'</td></tr><tr><td colspan=\"2\"><font size=\"1\">Source: Akshara Foundation</font</td></tr></table>';
   }
   return tableContent;
 }
@@ -319,7 +350,8 @@ function createSchoolInfo(type,info,schoolId,name)
      var asstext = assessment[0]
      assessmentInfo = assessmentInfo+'<a href=\"javascript:void(0);\" onclick=window.open("assessment/'+type+'/'+assessment[1]+'/'+schoolId+'","mywindow")>'+asstext+'</a><br>'
    }
-   var tableContent= '<table class=\"infoData\" width=\"245\" border=\"1\" bordercolor=\"#CCCCCC\"><tr><td colspan=\"2\" align=\"center\"><b>'+initCap(type)+' : '+name+'</b></td></tr><tr><td>Num of Girls</td><td align=\"right\">'+info.numGirls+'</td></tr><tr><td>Num of Boys</td><td align=\"right\">'+info.numBoys+'</td></tr><tr><td>Total Students</td><td align=\"right\">'+numStudents+'</td></tr><tr><td>Intervention Programmes</td><td>'+assessmentInfo+'</td></tr><tr><td colspan=\"2\" align=\"left\">'+sysText+'</td></tr><tr><td colspan=\"2\"><font size=\"1\">Source: Akshara Foundation</font</td></tr></table>';
+   var schoolpage='<a href=\"javascript:void(0);\" onclick=window.open("schoolpage/'+type+'/'+schoolId+'","mywindow")>School Information</a><br>';
+   var tableContent= '<table class=\"infoData\" width=\"245\" border=\"1\" bordercolor=\"#CCCCCC\"><tr><td colspan=\"2\" align=\"center\"><b>'+initCap(type)+' : '+name.toUpperCase()+'</b></td></tr><tr><td>Num of Girls</td><td align=\"right\">'+info.numGirls+'</td></tr><tr><td>Num of Boys</td><td align=\"right\">'+info.numBoys+'</td></tr><tr><td>Total Students</td><td align=\"right\">'+numStudents+'</td></tr><tr><td>Intervention Programmes</td><td>'+assessmentInfo+'</td></tr><tr><td colspan=\"2\" align=\"left\">'+sysText+'</td></tr><tr><td colspan=\"2\" align=\"left\">'+schoolpage+'</td></tr><tr><td colspan=\"2\"><font size=\"1\">Source: Akshara Foundation</font</td></tr></table>';
    return tableContent;
 }
 
@@ -379,12 +411,19 @@ function changeFocus(parentType,childType)
   if (parentType != "school" && parentType != "preschool")
     getBoundary(id,parentType,childType)
   var marker;
-  if(parentType =="district" || parentType=="preschooldistrict")
+  if(parentType =="district")
   {
     if(id in districtMarkers)
       marker = districtMarkers[id];
     else
       marker = getOtherMarker(blockMarkers);
+  }
+  else if( parentType=="preschooldistrict")
+  {
+    if(id in preschooldistrictMarkers)
+      marker = preschooldistrictMarkers[id];
+    else
+      marker = getOtherMarker(projectMarkers);
   }
   else if(parentType =="block")
   {

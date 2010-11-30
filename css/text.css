@@ -11,3 +11,9 @@
     padding: 5px; 
     border: 1px solid #aaa; 
 }
+
+div.textpage{
+  height:500px;
+  width:900px;
+  padding:10px;
+}
