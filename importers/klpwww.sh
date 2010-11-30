@@ -28,5 +28,10 @@ sudo -u postgres psql -d ${DBNAME} -f load/load.sql
 echo Computing aggregates for ${DBNAME}
 psql -U ${OWNER} -d ${DBNAME} -f agg.sql 
 
+# Data inserts for SYS, Pics and School Page
+sudo -u postgres psql -d ${DBNAME} -f load/tb_school_info.sql
+sudo -u postgres psql -d ${DBNAME} -f load/tb_sys_data.sql
+sudo -u postgres psql -d ${DBNAME} -f load/tb_sys_images.sql
+
 # Perform data workarounds
 psql -U ${OWNER} -d ${DBNAME} -f fixes.sql 
