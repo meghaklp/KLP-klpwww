@@ -1,0 +1,74 @@
+$var title: KLP: Visualization
+$var cssfiles: /yui/build/cssfonts/fonts-min.css /css/base.css /css/map.css
+$var jsfiles: /yui/build/yui/yui-min.js http://maps.google.com/maps/api/js?sensor=false /js/klp.js
+$var btags: class="yui-skin-sam" onload=initialiseSchool();
+
+<div id="map">
+    <div id="top_panel" style="height:100px">
+    <div>
+     <labe>Select Search Type</label>
+     <select id="selection" onChange="changeSelection();">
+       <option value="">Select</option>
+       <option value="school">Primary School</option>
+       <option value="preschool">Pre School</option>
+     </select>
+    </div>
+    <div id="schooldiv" style="display:inline">
+      <label>District</label>
+      <select id="district" onChange="changeFocus('district','block');">
+        <option value="">Select</option>
+      </select>
+      <label>Block</label>
+      <select id="block" onChange="changeFocus('block','cluster');">
+        <option value="">Select</option>
+      </select>
+      <label>Cluster</label>
+      <select id="cluster" onChange="changeFocus('cluster','school');">
+        <option value="">Select</option>
+      </select>
+      <label>School</label>
+      <select id="school" onChange="changeFocus('school','');">
+        <option value="">Select</option>
+      </select>
+    </div>
+    <div id="preschooldiv" style="display:none">
+      <label>District</label>
+      <select id="preschooldistrict" onChange="changeFocus('preschooldistrict','project');">
+        <option value="">Select</option>
+      </select>
+      <label>Project</label>
+      <select id="project" onChange="changeFocus('project','circle');">
+        <option value="">Select</option>
+      </select>
+      <label>Circle</label>
+      <select id="circle" onChange="changeFocus('circle','preschool');">
+        <option value="">Select</option>
+      </select>
+      <label>Pre School</label>
+      <select id="preschool" onChange="changeFocus('preschool','');">
+        <option value="">Select</option>
+      </select>
+    </div>
+    <div align="right">
+      <p style="float:left"><a href="visualization">Reset Map</a></p>
+      <p style="float:right">Find Place: <input type="text" id="address"/><input type="button" value="Go" onclick="geocode()"/></p>
+    </div>
+      <br>
+    </div>
+    <div id="map_canvas" style="width:800px; height:500px;position:relative;float:left"></div>
+    <div id="legend" style="width:120px; height:500px;position:relative;float:right" align="center">
+     <br>
+     <br>
+     <p align="center"><b><i>Legend</b></i></p>
+     <table>
+      <tr><td><img src="/images/marker_orange.png" alt="District" /></td><td>District</td></tr>
+      <tr><td><img src="/images/marker_yellow.png" alt="Block" /></td><td>Block</td></tr>
+      <tr><td><img src="/images/marker_green.png" alt="Cluster" /></td><td>Cluster</td></tr>
+      <tr><td><img src="/images/marker.png" alt="Project" /></td><td>Project</td></tr>
+      <tr><td><img src="/images/marker_purple.png" alt="Circle" /></td><td>Circle</td></tr>
+      <tr><td><img src="/images/school.png" alt="School" /></td><td>School</td></tr>
+      <tr><td><img src="/images/preschool.png" alt="PreSchool" /></td><td>PreSchool</td></tr>
+     </table>
+     
+    </div>
+</div>

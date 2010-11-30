@@ -1,0 +1,40 @@
+#map {
+	width: 920px;
+	min-height: 600px;
+        color:white;
+        font-family: "Arial", Sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size:  1em;
+
+	
+	border: 1px solids;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	background-color: #336666; /* Slate green colour */
+	
+	}
+
+
+#top_panel a:link{color: white;}
+#top_panel a:visited{color: white;}
+#top_panel a:hover {color: white;}
+
+
+	
+#map top_panel{
+	color: white;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size:  1em;
+}

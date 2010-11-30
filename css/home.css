@@ -1,0 +1,205 @@
+#sLeft {
+	float: left;
+		
+	width: 611px;
+	height: 539px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	
+	}
+
+/*  DID YOU KNOW section style */
+#duk {
+	/*float: left;*/
+		
+	width: 611px;
+	height: 406px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	background-image: url(../images/duk.jpg);
+	background-repeat: no-repeat;
+	}
+
+#col1 {
+	float: left;
+		
+	width: 300px;
+	height: 160px;
+	
+	border: 0px;
+
+	padding-top: 240px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	color: white;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-size: 9pt;
+	line-height: 13pt;
+	font-weight: bold;
+	}
+	
+#col2 {
+	float: left;
+		
+	width: 300px;
+	height: 160px;
+	
+	border: 0px;
+
+	padding-top: 240px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	color: white;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-size: 9pt;
+	line-height: 13pt;
+	font-weight: bold;
+	}
+
+
+#col1 a:link{color: orange;}
+#col1 a:visited{color: orange;}
+#col1 a:hover {color: orange;}
+
+#col2 a:link{color: orange;}
+#col2 a:visited{color: orange;}
+#col2 a:hover {color: orange;}
+
+	
+/* end of DID YOU KNOW section style */
+
+#general{
+	clear: both;
+	
+	width: 451px;
+	height: 123px;
+	border: 0px;
+
+	padding-top: 25px;
+	padding-right: 40px;
+	padding-bottom: 10px;
+	padding-left: 140px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	background-image: url(../images/general.png);
+	background-repeat: no-repeat;
+	
+	color: black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-size: 10pt;
+	line-height: 13pt;
+	font-weight: bold;
+	}
+		
+#sRight {
+	float: left;
+	
+	width: 309px;
+	height: 539px;
+	
+	border: 0px;
+
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	background-color: black;
+
+	}
+
+#blog {
+
+	width: 279px;
+	height: 220px;
+	
+	border: 0px;
+
+	padding-top: 35px;
+	padding-right: 20px;
+	padding-bottom: 0px;
+	padding-left: 20px;
+
+	margin-top: 0px;
+	margin-right: 30px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	background-image: url(../images/blog.png);
+	background-repeat: no-repeat;
+	
+	color:black;
+	font-family: "Arial", Sans-serif;
+	font-style: normal;
+	font-size: 8pt;
+        
+	
+	}
+
+#flickr {
+	
+	width: 309px;
+	height: 230px;
+	
+	border: 0px;
+
+	padding-top: 5px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+
+	background-color: black;
+	color: white;
+	}

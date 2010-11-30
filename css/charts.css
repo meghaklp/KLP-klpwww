@@ -1,0 +1,14 @@
+div.leftside{
+  float: left;
+}
+
+div.rightside{
+  float: right;
+  border: 1px solid black; 
+}
+
+div.leftContent{ float: left;height:400px;width:400px;border-right: 1px solid gray; border-bottom: 1px solid gray;padding:5px;}
+div.rightContent{ float: right; height:400px;width:400px;border-bottom: 1px solid gray;border-left: 1px solid gray;padding:5px;}
+
+
+
