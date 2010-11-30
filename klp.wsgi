@@ -211,11 +211,12 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_assessmentinfo_block':"select b1.name,sum(agg.aggval) from tb_school_assess_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b1.id = %s group by b1.name",
               'get_assessmentinfo_cluster':"select b2.name,sum(agg.aggval) from tb_school_assess_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b2.id = %s group by b2.name",
               'get_school_info':"select b.name, b1.name, b2.name, s.name,h.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
-              'get_school_address_info':"select info.address,info.area,info.postcode,info.landmark_1,info.landmark_2,info.inst_id_1,info.inst_id_2, info.bus_no,info.images from tb_school_info info where info.schoolid=%s",
+              'get_school_address_info':"select info.address,info.area,info.postcode,info.landmark_1,info.landmark_2,info.inst_id_1,info.inst_id_2, info.bus_no from tb_school_info info where info.schoolid=%s",
               'get_sys_info':"select sys.dateofvisit from tb_sys_data sys where sys.schoolid=%s group by sys.dateofvisit",
               'get_school_point':"select ST_AsText(inst.coord) from vw_inst_coord inst where inst.instid=%s",
               'get_sys_nums':"select count(*) from tb_sys_data",
               'get_sys_image_nums':"select count(*) from tb_sys_images",
+              'get_school_images':"select hash_file from tb_sys_images where schoolid=%s and verified='Y'",
 }
 render = web.template.render('templates/', base='base')
 render_plain = web.template.render('templates/')
@@ -712,7 +713,18 @@ class schoolpage:
         data["inst_id_1"]=row[5]
         data["inst_id_2"]=row[6]
         data["bus_no"]=row[7]
-        data["images"]=row[8]
+
+      #Added to query images from tb_sys_images
+      from ConfigParser import SafeConfigParser
+      config = SafeConfigParser()
+      config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
+      imgpath = config.get('Pictures','hashpicpath')
+      data["image_dir"] = "/" + imgpath
+      cursor.execute(statements['get_school_images'],(id,))
+      result = cursor.fetchall()
+      data["images"]=[]
+      for row in result:
+        data["images"].append(row[0])
 
       cursor.execute(statements['get_school_gender'],(id,))
       result = cursor.fetchall()
@@ -921,16 +933,34 @@ class insertSYS:
 
 
 class postSYS:
+
   def populateImages(self,selectedfile,schoolid,sysid):
-    if selectedfile.filename != "":
-      data = psycopg2.Binary(selectedfile.file.read())
-      imagequery = "insert into tb_sys_images(schoolid,filename,image,sysid) values( %s , %s, %s, %s)"
-      try:
-        cursor.execute(imagequery,(schoolid,selectedfile.filename,data,sysid,))
-        connection.commit()
-      except:
-        traceback.print_exc(file=sys.stderr)
-        connection.rollback()
+      #Getting path to picture files from the config file
+      from ConfigParser import SafeConfigParser
+      import hashlib
+      config = SafeConfigParser()
+      config.read(os.path.join(os.getcwd(),'config/klpconfig.ini'))
+      savepath = config.get('Pictures','origpicpath')
+      if selectedfile.filename != "":
+        try:
+          if(os.path.exists(savepath+selectedfile.filename)):
+            savefilename = selectedfile.filename.split('.')[0] + '-' + schoolid + '.jpg'
+          else:
+            savefilename = selectedfile.filename
+            wf=open(savepath + savefilename,'w')
+            wf.write(selectedfile.file.read())
+            wf.close()
+            hashed_filename = hashlib.md5(open(savepath +savefilename,'r').read()).hexdigest() + '.jpg'
+        except IOError:
+          traceback.print_exc(file=sys.stderr)
+          print "Error occurred during processing this file: " + savefilename
+        imagequery = "insert into tb_sys_images(schoolid,original_file,hash_file,sysid,verified) values( %s , %s, %s, %s, %s)"
+        try:
+          cursor.execute(imagequery,(schoolid,savefilename,hashed_filename,sysid,'N')) #Images coming in from this flow are yet to be verified
+          connection.commit()
+        except:
+          traceback.print_exc(file=sys.stderr)
+          connection.rollback()
 
   def POST(self,type):
     try:
