@@ -32,6 +32,7 @@ psql -U ${OWNER} -d ${DBNAME} -f agg.sql
 sudo -u postgres psql -d ${DBNAME} -f load/tb_school_info.sql
 sudo -u postgres psql -d ${DBNAME} -f load/tb_sys_data.sql
 sudo -u postgres psql -d ${DBNAME} -f load/tb_sys_images.sql
+sudo -u postgres psql -d ${DBNAME} -f load/tb_sys_qans.sql
 
 # Perform data workarounds
 psql -U ${OWNER} -d ${DBNAME} -f fixes.sql 
