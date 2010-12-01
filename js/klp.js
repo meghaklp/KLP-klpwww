@@ -72,8 +72,7 @@ function initialiseSchool(){
   };
   map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
   geocoder = new google.maps.Geocoder();
-  for (type in types)
-    getPoints(types[type]);
+  getPoints();
 
   google.maps.event.addListener(map, 'zoom_changed',zoomChanged);
 }
@@ -181,7 +180,7 @@ function makeInvisible(markers)
 }
 
  
-function getPoints(type)
+function getPoints()
 {
   YUI({base: 'yui/build/',
     timeout: 50000}).use("io-base","json-parse",
@@ -196,62 +195,64 @@ function getPoints(type)
             try {  
               points= Y.JSON.parse(o.responseText);
             } catch (e) {
-              Y.log('Could not parse json'+type, 'error', 'points');
+              Y.log('Could not parse json', 'error', 'points');
               return;
             }
-            //if( type != 'preschooldistrict' )
-            plotPoints(points,type);
-            if( type=='district')
-              populateDistricts(points);
-            if( type=='preschooldistrict')
-              populatePreSchoolDistricts(points);
+            plotPoints(points);
           },
           failure: function(id, o) {
             Y.log('Could not retrieve point data ','error','points');
           }  
         }
       };
-      url = "pointinfo/"+type;
+      url = "pointinfo/"
       var request = Y.io(url, callback);
     });
 }
 
-function plotPoints(pointInfo,type)
+function plotPoints(pointInfo)
 {
-  visible=false;
-  zoom =zoomInfo[type];
-  var image = images[type];
-  currentzoom = map.getZoom();
-  if(currentzoom == zoom)
-    visible=true;
-  if(type=="district")
-    markers = districtMarkers;
-  if(type=="block")
-    markers = blockMarkers;
-  if(type=="cluster")
-    markers = clusterMarkers;
-  if(type=="school")
-    markers = schoolMarkers;
-  if(type=="preschooldistrict")
-    markers = preschooldistrictMarkers;
-  if(type=="project")
-    markers = projectMarkers;
-  if(type=="circle")
-    markers = circleMarkers;
-  if(type=="preschool")
-    markers = preschoolMarkers;
-  for (var p in pointInfo) {
-    var point = pointInfo[p];
-    var pos = new google.maps.LatLng(point.lat, point.lon);
-    markers[point.id] = new google.maps.Marker({
-      position: pos,
-      map: map,
-      title: point.name,
-      visible:visible,
-      icon:"images/"+image
-    });
-    displayPointInfo(markers[point.id],point.id,point.name,type)
+  for( type in pointInfo)
+  {
+    visible=false;
+    zoom =zoomInfo[type];
+    var image = images[type];
+    currentzoom = map.getZoom();
+    if(currentzoom == zoom)
+      visible=true;
+    if(type=="district")
+      markers = districtMarkers;
+    if(type=="block")
+      markers = blockMarkers;
+    if(type=="cluster")
+      markers = clusterMarkers;
+    if(type=="school")
+      markers = schoolMarkers;
+    if(type=="preschooldistrict")
+      markers = preschooldistrictMarkers;
+    if(type=="project")
+      markers = projectMarkers;
+    if(type=="circle")
+      markers = circleMarkers;
+    if(type=="preschool")
+      markers = preschoolMarkers;
+    for (var p in pointInfo[type]) {
+      var point = pointInfo[type][p];
+      var pos = new google.maps.LatLng(point.lat, point.lon);
+      markers[point.id] = new google.maps.Marker({
+        position: pos,
+        map: map,
+        title: point.name,
+        visible:visible,
+        icon:"images/"+image
+      });
+      displayPointInfo(markers[point.id],point.id,point.name,type)
     
+    }
+    if( type=='district')
+      populateDistricts(pointInfo[type]);
+    if( type=='preschooldistrict')
+      populatePreSchoolDistricts(pointInfo[type]);
   }
 }
 
