@@ -16,8 +16,7 @@ import Utility.KLPDB
 
 urls = (
      '/','mainmap',
-     '/pointinfo/(.*)school', 'getSchoolPointInfo',
-     '/pointinfo/(.*)', 'getPointInfo',
+     '/pointinfo/', 'getPointInfo',
      '/assessment/(.*)/(.*)/(.*)','assessments',
      '/visualization*','visualization',
      '/info/school/(.*)','getSchoolInfo',
@@ -110,8 +109,8 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_cluster':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Cluster' and b.id=bcoord.id_bndry order by b.name",
               'get_project':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Project' and b.id=bcoord.id_bndry order by b.name",
               'get_circle':"select bcoord.id_bndry,ST_AsText(bcoord.coord),initcap(b.name) from vw_boundary_coord bcoord, tb_boundary b where bcoord.type='Circle' and b.id=bcoord.id_bndry order by b.name",
-              'get_schools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b,tb_bhierarchy bhier where s.id=inst.instid and s.bid=b.id and bhier.id = b.hid and bhier.type='1' order by s.name",
-              'get_preschools':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b,tb_bhierarchy bhier where s.id=inst.instid and s.bid=b.id and bhier.id = b.hid and bhier.type='2' order by s.name",
+              'get_school':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b,tb_bhierarchy bhier where s.id=inst.instid and s.bid=b.id and bhier.id = b.hid and bhier.type='1' order by s.name",
+              'get_preschool':"select inst.instid ,ST_AsText(inst.coord),upper(s.name) from vw_inst_coord inst, tb_school s,tb_boundary b,tb_bhierarchy bhier where s.id=inst.instid and s.bid=b.id and bhier.id = b.hid and bhier.type='2' order by s.name",
               'get_district_points':"select distinct b1.id, b1.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent and b.hid=hier.id and hier.type=1 and b.id=%s order by b1.name",
               'get_preschooldistrict_points':"select distinct b1.id, b1.name from tb_boundary b, tb_boundary b1,tb_boundary b2,tb_bhierarchy hier where b2.parent=b1.id and b1.parent = b.id and b.hid = hier.id and hier.type=2 and b.id=%s",
               'get_block_points':"select distinct b2.id, b2.name from tb_boundary b, tb_boundary b1, tb_boundary b2,tb_bhierarchy hier where b.id=b1.parent and b1.id=b2.parent  and b.hid = hier.id and hier.type=1 and b1.id=%s order by b2.name",
@@ -231,58 +230,29 @@ class mainmap:
     return render.klp()
 
 class getPointInfo:
-  def GET(self,type):
-    pointInfo= []
+  def GET(self):
+    pointInfo={"district":[],"block":[],"cluster":[],"project":[],"circle":[],"preschooldistrict":[],"school":[],"preschool":[]}
     try:
-      #print >> sys.stderr, "Executing :get_"+type
-      cursor.execute(statements['get_'+type])
-      result = cursor.fetchall()
-      for row in result:
-        try:
-          match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
-        except:
-          print >> sys.stderr, type+" "+str(row)+" "+str(result)
-          traceback.print_exc(file=sys.stderr)
-          continue
-        lon = match.group(1)
-        lat = match.group(2)
-        data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
-        pointInfo.append(data)
-      connection.commit()
+      for type in pointInfo:
+        cursor.execute(statements['get_'+type])
+        result = cursor.fetchall()
+        for row in result:
+          try:
+            match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
+          except:
+            traceback.print_exc(file=sys.stderr)
+            continue
+          lon = match.group(1)
+          lat = match.group(2)
+          data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
+          pointInfo[type].append(data)
+        connection.commit()
     except:
-      print >> sys.stderr, type
       traceback.print_exc(file=sys.stderr)
       connection.rollback()
     web.header('Content-Type', 'application/json')
     return jsonpickle.encode(pointInfo)
- 
-class getSchoolPointInfo:
-  """Returns coordinates of all the schools"""
-  def GET(self,type):
-    """get coordinates of all the schools"""
-    schools= []
-    try:
-      #print >> sys.stderr, "Executing :get_"+type+"schools"
-      cursor.execute(statements['get_'+type+'schools'])
-      result = cursor.fetchall()
-      for row in result:
-        try:
-          match = re.match(r"POINT\((.*)\s(.*)\)",row[1])
-        except:
-          print >> sys.stderr, str(row)+" "+str(result)
-          traceback.print_exc(file=sys.stderr)
-          continue
-        lon = match.group(1)
-        lat = match.group(2)
-        data={"lon":lon,"lat":lat,"name":row[2],"id":row[0]}
-        schools.append(data)
-      connection.commit()
-    except:
-      print >> sys.stderr, type
-      traceback.print_exc(file=sys.stderr)
-      connection.rollback()
-    web.header('Content-Type', 'application/json')
-    return jsonpickle.encode(schools)
+
 
 class visualization:
   def GET(self):
