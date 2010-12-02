@@ -187,7 +187,7 @@ if(info["images"].length>0)
 }
   document.getElementById("school_pics").innerHTML=school_pics;
  
-  tweet='<iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\" src=\"http://platform.twitter.com/widgets/tweet_button.html?url=' + document.location.href + '\" style=\"vertical-align:top; width:130px; height:50px;\"></iframe>'
+  tweet='<iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\" src=\"http://platform.twitter.com/widgets/tweet_button.html?url=' + document.location.href + '&text='+ 'I visited ' + info["name"] +' and shared my story. More on the school here:' +'\" style=\"vertical-align:top; width:130px; height:50px;\"></iframe>'
 
   fb_like='<iframe src=\"http://www.facebook.com/plugins/like.php?href='+ document.location.href + '&amp;layout=standard&amp;show_faces=true&amp;width=350&amp;action=like&amp;colorscheme=light&amp;height=80\" scrolling=\"no\" frameborder=\"0\" style=\"vertical-align:top; border:none; overflow:hidden; width:350px; height:80px;\" allowTransparency=\"true\"></iframe>'
 
