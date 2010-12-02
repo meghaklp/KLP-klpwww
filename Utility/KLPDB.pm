@@ -23,8 +23,7 @@ our @EXPORT = qw(
 our $VERSION = '0.01';
 
 sub connect {
-    return (DBI->connect_cached('dbi:Oracle:' . 'klpdb', 
-    #return (DBI->connect_cached('dbi:Oracle:' . $ENV{KLP_DB}, 
+    return (DBI->connect_cached('dbi:Oracle:' . $ENV{KLP_DB}, 
                                 $ENV{KLP_USER}, 
                                 $ENV{KLP_PASSWD}, 
                                 { AutoCommit => 0 ,
