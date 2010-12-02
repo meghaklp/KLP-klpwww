@@ -60,12 +60,14 @@ function initialise(data)
     type="preschool";
     document.getElementById("school_info_heading").innerHTML = "Preschool Information";
     document.getElementById("school_visits_heading").innerHTML = "Preschool Visits";
+    document.title = "Preschool Information";
   }
   else
   {
     type="school";
     document.getElementById("school_info_heading").innerHTML = "School Information";
     document.getElementById("school_visits_heading").innerHTML = "School Visits";
+    document.title = "School Information";
   }
 
   document.getElementById("student_info_heading").innerHTML = "Student Information";
@@ -130,16 +132,16 @@ function initialise(data)
 
         infotable='<table id="infotable" class=\"table1\">' +
                         '<tbody><tr>' +
-                            '<th scope="row">Medium Of Instruction</th>' +
-                            '<td>:   '+info["moi"]+'</td>' +
-                        '</tr><tr>' +
                             '<th scope="row">Category</th>' +
                             '<td>:   '+info["cat"]+'</td>'
                   if(info["type"] !=2)
                   {
                         infotable = infotable + '</tr><tr>' +
                             '<th scope="row">Gender</th>' +
-                            '<td>:   '+info["sex"]+'</td>' 
+                            '<td>:   '+info["sex"]+'</td>' +
+                            '</tr><tr>' +
+                            '<th scope="row">Medium Of Instruction</th>' +
+                            '<td>:   '+info["moi"]+'</td>' 
                         /*'</tr><tr>' +
                             '<th scope="row">Dise Code</th>' +
                             '<td>:   '+info["dise_code"]+'</td>' */
@@ -187,7 +189,7 @@ if(info["images"].length>0)
 }
   document.getElementById("school_pics").innerHTML=school_pics;
  
-  tweet='<iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\" src=\"http://platform.twitter.com/widgets/tweet_button.html?url=' + document.location.href + '\" style=\"vertical-align:top; width:130px; height:50px;\"></iframe>'
+  tweet='<iframe allowtransparency=\"true\" frameborder=\"0\" scrolling=\"no\" src=\"http://platform.twitter.com/widgets/tweet_button.html?url=' + document.location.href + '&text='+ 'I visited ' + info["name"] +' and shared my story. More on the school here:' +'\" style=\"vertical-align:top; width:130px; height:50px;\"></iframe>'
 
   fb_like='<iframe src=\"http://www.facebook.com/plugins/like.php?href='+ document.location.href + '&amp;layout=standard&amp;show_faces=true&amp;width=350&amp;action=like&amp;colorscheme=light&amp;height=80\" scrolling=\"no\" frameborder=\"0\" style=\"vertical-align:top; border:none; overflow:hidden; width:350px; height:80px;\" allowTransparency=\"true\"></iframe>'
 
