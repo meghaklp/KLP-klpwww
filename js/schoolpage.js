@@ -60,12 +60,14 @@ function initialise(data)
     type="preschool";
     document.getElementById("school_info_heading").innerHTML = "Preschool Information";
     document.getElementById("school_visits_heading").innerHTML = "Preschool Visits";
+    document.title = "Preschool Information";
   }
   else
   {
     type="school";
     document.getElementById("school_info_heading").innerHTML = "School Information";
     document.getElementById("school_visits_heading").innerHTML = "School Visits";
+    document.title = "School Information";
   }
 
   document.getElementById("student_info_heading").innerHTML = "Student Information";
