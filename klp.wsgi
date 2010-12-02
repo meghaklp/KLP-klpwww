@@ -656,11 +656,11 @@ class schoolpage:
         else:
           data["cat"]=row[5].upper()
         if row[6]==None:
-          data["sex"]='-'
+          data["sex"]='co-ed'#Adding default values
         else:
           data["sex"]=row[6].capitalize()
         if row[7]==None:
-          data["moi"]='-'
+          data["moi"]='Kannada'#Adding default values
         else:
           data["moi"]=row[7].capitalize()
         if row[8]==None:
