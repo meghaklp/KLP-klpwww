@@ -7,3 +7,9 @@
 
 -- Fix spelling
 update tb_boundary set name = 'bangalore' where id = 8877;
+
+-- Add question for reading 2009 (as it shared the question with reading 2008)
+insert into tb_question values('40','15','Reading');
+
+--Change 20th day for Reading 2009 to Mid test
+update tb_assessment set name='Mid test' where id=18;

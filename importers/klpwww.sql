@@ -189,6 +189,7 @@ CREATE TABLE "tb_student_eval" (
   "stuid" integer references "tb_student" ("id") ON DELETE CASCADE, -- Student id
   "mark" numeric(5,2) default NULL,
   "grade" char(2) default NULL,
+  "ayid" integer NOT NULL REFERENCES "tb_academic_year" ("id") ON DELETE CASCADE,
   PRIMARY KEY ("qid", "assid", "stuid")
 );
 

@@ -6,7 +6,7 @@ var info;
 
 var levels={"Reading":{"0":0,"L":2,"W":4,"S":6,"P":8},"English":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"NNG":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"NNG3":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"Ramanagara-NNG1":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"Ramanagara-NNG2":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"Anganwadi":{"General awareness":0,"Gross motor":1,"Fine motor":2,"Language":3,"Intellectual":4,"Socio-emotional":5,"Pre-academic":6},"Target NNG":{"Rung1":0,"Rung2":1,"Rung3":2,"Rung4":3,"Rung5":4},"Target Reading":{"0":0,"L":2,"W":4,"S":6,"P":8}};
 
-var timeLabel= {"1":{"Pre test":0,"Post test":4},"2":{"20th day test":0,"60th day test":4},"3":{"20th day test":0,"60th day test":4},"4":{"Pre test":0,"Post test":4},"5":{"Baseline":0,"15th day test":4,"30th day test":8,"45th day test":12},"6":{"Pre test":0,"Post test":4},"7":{"Pre test":0,"Mid test":4,"20th day":4,"Post test":8},"8":{"Pre test":0,"Post test":4},"9":{"Pre test":0,"Post test":4},"10":{"Pre test":0,"Post test":4},"11":{"NNG2":4},"12":{"Reading":4}};
+var timeLabel= {"1":{"Pre test":0,"Post test":4},"2":{"20th day test":0,"60th day test":4},"3":{"20th day test":0,"60th day test":4},"4":{"Pre test":0,"Post test":4},"5":{"Baseline":0,"15th day test":4,"30th day test":8,"45th day test":12},"6":{"Pre test":0,"Post test":4},"7":{"Pre test":0,"Mid test":4,"Post test":8},"8":{"Pre test":0,"Post test":4},"9":{"Pre test":0,"Post test":4},"10":{"Pre test":0,"Post test":4},"11":{"NNG2":4},"12":{"Reading":4}};
 
 var color={"0":"red","O":"red","L":"orange","W":"yellow","S":"blue","P":"green","Boys":"blue","Girls":"pink"};
 

@@ -144,8 +144,8 @@ select agg_school_grade(10, 90);
 select agg_school_grade(11, 90);
 select agg_school_grade(12, 90);
 -- 2009 Reading
---select agg_school_grade(15, 119);
---select agg_school_grade(16, 119);
+select agg_school_grade(15, 119);
+select agg_school_grade(16, 119);
 select agg_school_grade(17, 119);
 select agg_school_grade(18, 119);
 -- 2009 Target reading
@@ -157,8 +157,8 @@ select agg_school_nng(4, 1);
 select agg_school_nng(5, 2);
 select agg_school_nng(6, 2);
 -- ಪರಿಹರ ಬೊಧನೆ  (2008 Reading)
---select agg_school_grade(13, 2);
---select agg_school_grade(14, 2);
+select agg_school_grade(13, 2);
+select agg_school_grade(14, 2);
 -- -- 2009 NNG
 select agg_school_nng(7, 119);
 select agg_school_nng(8, 119);

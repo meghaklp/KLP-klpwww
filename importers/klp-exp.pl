@@ -49,10 +49,21 @@ my %q_map = (
   132,23
 );
 
-
+#to ignore questions from centers as same question exists for schools and hence mapped to assessment (for 2008 NNG)
 my %ignore_qmap = (
     18, 5,
     19, 6
+);
+
+
+#for distinguishing between reading 2008 and reading 2009
+my %exam_year_map = (
+    15 => {2=>13,
+         119=>15
+         },
+    16 => {2=>14,
+         119=>16
+         },
 );
 
 
@@ -72,8 +83,8 @@ my %exam_map = (
     27, 6,
     19, 6,
 
-    #15,13,                  #2008 Reading (11 districts)
-    #16,14,
+    15,13,                  #2008 Reading (11 districts)
+    16,14,
 
     33, 7,                  # 2009 NNG
     36, 8,
@@ -106,19 +117,28 @@ sub make_assess_csv {
     $csv->column_names(@{$sth->{NAME_lc}});
     open my $fh, ">:encoding(utf8)", $fname or die "$fname: $!";
     while (my $row = $sth->fetchrow_arrayref) {
+        my $isQuestion=0;
         next unless(exists $exam_map{$row->[$col]});
         if ( index($fname,"question") != -1 )#only questions to be ignored
         {
+          $isQuestion=1;
           print STDERR "Question query $row->[$col]";
+          #for 2008 NNG to ignore centers
           if( exists $ignore_qmap{$row->[$col]} ) 
           {
             print STDERR "skipping";
             next;
           }
         }
+        #for NNG3,Ramanagara since they have same examid but different questions
         if ( exists $q_map{$row->[0]} )
         {
           $row->[$col]=$q_map{$row->[0]};
+        }
+        #for distinguishing reading2008 and reading2009
+        elsif ( exists $exam_year_map{$row->[$col]} && $isQuestion != 1)
+        {
+          $row->[$col]=$exam_year_map{$row->[$col]}{$row->[5]};
         }
         else
         { 
@@ -284,7 +304,8 @@ select sub.subjectid as qid,
        ce.examid as assid,
        cse.studentid as stuid,
        case when se.maxmarks > 0 then cse.marksobtained/se.maxmarks*100 end as mark,
-       cse.gradeobtained as grade
+       cse.gradeobtained as grade,
+       cse.acadyearid as cseyear
 from 
        eg_subject sub,
        eg_subject_exam se,
