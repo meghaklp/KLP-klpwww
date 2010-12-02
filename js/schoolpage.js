@@ -132,16 +132,16 @@ function initialise(data)
 
         infotable='<table id="infotable" class=\"table1\">' +
                         '<tbody><tr>' +
-                            '<th scope="row">Medium Of Instruction</th>' +
-                            '<td>:   '+info["moi"]+'</td>' +
-                        '</tr><tr>' +
                             '<th scope="row">Category</th>' +
                             '<td>:   '+info["cat"]+'</td>'
                   if(info["type"] !=2)
                   {
                         infotable = infotable + '</tr><tr>' +
                             '<th scope="row">Gender</th>' +
-                            '<td>:   '+info["sex"]+'</td>' 
+                            '<td>:   '+info["sex"]+'</td>' +
+                            '</tr><tr>' +
+                            '<th scope="row">Medium Of Instruction</th>' +
+                            '<td>:   '+info["moi"]+'</td>' 
                         /*'</tr><tr>' +
                             '<th scope="row">Dise Code</th>' +
                             '<td>:   '+info["dise_code"]+'</td>' */
