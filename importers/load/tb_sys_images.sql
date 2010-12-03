@@ -5652,3 +5652,5 @@ INSERT INTO tb_sys_images(schoolid,original_file,hash_file,sysid,verified) value
 INSERT INTO tb_sys_images(schoolid,original_file,hash_file,sysid,verified) values(33436,'31050.jpg','ccbe3146c70ae480db07b58b513b096b.jpg',3114,'Y');
 INSERT INTO tb_sys_images(schoolid,original_file,hash_file,sysid,verified) values(33443,'40820.jpg','e0000a110e66f37998a0fbc593467362.jpg',3115,'Y');
 INSERT INTO tb_sys_images(schoolid,original_file,hash_file,sysid,verified) values(33443,'40821.jpg','3bbb0fefd63aa6333b9a42e15f4a1fb9.jpg',3115,'Y');
+INSERT INTO tb_sys_images(schoolid,original_file,hash_file,sysid,verified) values(33924,'30826.jpg','d41d8cd98f00b204e9800998ecf8427e.jpg',3116,'Y');
+INSERT INTO tb_sys_images(schoolid,original_file,hash_file,sysid,verified) values(33924,'30827.jpg','965d31d2a49947d2b67436020c9f5219.jpg',3116,'Y');

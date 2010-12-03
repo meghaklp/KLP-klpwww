@@ -2950,3 +2950,4 @@ INSERT INTO tb_sys_data(id,schoolid,name,dateofvisit) values(3112,33434,'LOCALCI
 INSERT INTO tb_sys_data(id,schoolid,name,dateofvisit) values(3113,33435,'LOCALCIRCLE','24-09-2010');
 INSERT INTO tb_sys_data(id,schoolid,name,dateofvisit) values(3114,33436,'LOCALCIRCLE','24-09-2010');
 INSERT INTO tb_sys_data(id,schoolid,name,dateofvisit) values(3115,33443,'LOCALCIRCLE','27-09-2010');
+INSERT INTO tb_sys_data(id,schoolid,name,dateofvisit) values(3116,33924,'LOCALCIRCLE','06-09-2010');
