@@ -15,7 +15,7 @@
 
 ## The Latest Version
   
-  The latest version is hosted on http://klp.org.in.
+  The latest version is hosted on [http://klp.org.in](http://klp.org.in).
   The GIT HUB project repository is on https://github.com/meghaklp/klpwww/.
 
   
