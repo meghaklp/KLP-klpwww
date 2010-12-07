@@ -1,6 +1,6 @@
 # KLP (Karnataka Learning Partnership) Website
 
-  ## What is it?
+## What is it?
   
   This is the website for the Karnataka Learning Partnership.
   Karnataka Learning Partnership is a public space where 
@@ -13,32 +13,30 @@
   extend the development to technology contributions.
 
 
-  ## The Latest Version
+## The Latest Version
   
   The latest version is hosted on http://klp.org.in.
   The GIT HUB project repository is on https://github.com/meghaklp/klpwww/.
 
   
-  ## Documentation
+## Documentation
   
   Documentation of Design and Requirements are tracked separately
   by the collaborators of this repository.
 
 
-  ## Installation
+## Installation
 
   This is hosted site content. Providing installation notes is not applicable
 
 
-  ## Licensing
+## Licensing
   
   Will be determined shortly  
   
 
-  ## Contacts
+## Contacts
 
   * If you want to participate in actively developing the KLP Website
     please write to dev@klp.org.in and let us know of your particular 
     interests in development.
-
-
