@@ -30,11 +30,6 @@
   This is hosted site content. Providing installation notes is not applicable
 
 
-## Licensing
-  
-  Will be determined shortly  
-  
-
 ## Contacts
 
   * If you want to participate in actively developing the KLP Website
