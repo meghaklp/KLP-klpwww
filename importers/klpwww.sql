@@ -197,7 +197,7 @@ CREATE TABLE "tb_student_eval" (
 DROP TABLE IF EXISTS "tb_sys_data" cascade;
 CREATE TABLE "tb_sys_data" (
   "id" serial unique, -- 'SYS id'
-  "schoolid" integer,
+  "schoolid" integer NOT NULL references "tb_school" ("id") on delete cascade,
   "name" varchar(100),
   "email" varchar(100),
   "telephone" varchar(50),
@@ -281,7 +281,7 @@ CREATE TABLE "tb_sys_images" (
 
 DROP TABLE IF EXISTS "tb_school_info";
 CREATE TABLE "tb_school_info"(
-  "schoolid" integer,
+  "schoolid" integer NOT NULL references "tb_school" ("id") on delete cascade,
   "address" varchar(255),
   "area" varchar(100),
   "postcode" varchar(100),
@@ -292,7 +292,8 @@ CREATE TABLE "tb_school_info"(
   "bus_no" varchar (100),
   "mp" varchar(100),
   "mla" varchar(100),
-  "ward" varchar(100)
+  "ward" varchar(100),
+  PRIMARY KEY  ("schoolid")
 );
 -- Remote views via dblink
 
