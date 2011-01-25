@@ -53,6 +53,7 @@ CREATE TABLE "tb_school" (
   "dise_code" varchar(14) default NULL,
   "name" varchar(300) NOT NULL,
   "cat" school_category default NULL,
+  "status" integer NOT NULL, -- '0 is Inactive, 1 is Active'
   "sex" school_sex default 'co-ed',
   "moi" school_moi default 'kannada',
   "mgmt" school_management default 'ed',
