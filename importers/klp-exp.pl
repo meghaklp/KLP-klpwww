@@ -197,7 +197,8 @@ select s.id as id,
      trim(s.schoolcode) as dise_code,
      trim(s.schoolname) as name,
      trim(sc.category_desc) as cat,
-     null as sex,
+     s.is_active as status,
+     s.inst_scho_gend as sex,
      lower(trim(i.medium_name)) as moi,
      null as mgmt
 from eg_school s,
@@ -205,8 +206,7 @@ from eg_school s,
      eg_instr_medium i
 where
      s.id_instr_medium = i.id_instr_medium (+)
-     and s.categoryid = sc.categoryid (+)
-     and s.is_active = 1
+     and s.categoryid = sc.categoryid
 }},
 # tb_child
 {fname => 'tb_child',
