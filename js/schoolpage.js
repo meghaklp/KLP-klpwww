@@ -131,8 +131,16 @@ function initialise(data)
 
 
         infotable='<table id="infotable" class=\"table1\">' +
-                        '<tbody><tr>' +
-                            '<th scope="row">Category</th>' +
+                        '<tbody><tr>' 
+                  if(info["status"] == 0){
+                      if(info["type"] != 2) {
+                            infotable = infotable + '<th scope=\"row\" colspan=\"2\">This School is reported to have been CLOSED.</th>' 
+                      } else {
+                            infotable = infotable + '<th scope=\"row\" colspan=\"2\">This Preschool is reported to have been CLOSED.</th>' 
+                      }      
+                      infotable = infotable + '</tr><tr>' 
+                  }
+                  infotable = infotable + '<th scope="row">Category</th>' +
                             '<td>:   '+info["cat"]+'</td>'
                   if(info["type"] !=2)
                   {
