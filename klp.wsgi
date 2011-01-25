@@ -209,7 +209,7 @@ statements = {'get_district':"select bcoord.id_bndry,ST_AsText(bcoord.coord),ini
               'get_assessmentinfo_district':"select b.name,sum(agg.aggval) from tb_school_assess_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b.id = %s group by b.name",
               'get_assessmentinfo_block':"select b1.name,sum(agg.aggval) from tb_school_assess_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b1.id = %s group by b1.name",
               'get_assessmentinfo_cluster':"select b2.name,sum(agg.aggval) from tb_school_assess_agg agg,tb_assessment ass,tb_boundary b, tb_boundary b1, tb_boundary b2,tb_school s where ass.pid=%s and agg.assid=ass.id and b.id=b1.parent and b1.id = b2.parent and s.bid = b2.id and agg.sid=s.id and b2.id = %s group by b2.name",
-              'get_school_info':"select b.name, b1.name, b2.name, s.name,h.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
+              'get_school_info':"select b.name, b1.name, b2.name, s.name,h.type,s.cat,s.sex,s.moi,s.mgmt,s.dise_code,s.status from tb_boundary b, tb_boundary b1, tb_boundary b2, tb_school s,tb_bhierarchy h where s.id = %s and b.id=b1.parent and b1.id=b2.parent and s.bid=b2.id and b.hid=h.id",
               'get_school_address_info':"select info.address,info.area,info.postcode,info.landmark_1,info.landmark_2,info.inst_id_1,info.inst_id_2, info.bus_no from tb_school_info info where info.schoolid=%s",
               'get_sys_info':"select sys.dateofvisit from tb_sys_data sys where sys.schoolid=%s group by sys.dateofvisit",
               'get_school_point':"select ST_AsText(inst.coord) from vw_inst_coord inst where inst.instid=%s",
@@ -671,6 +671,7 @@ class schoolpage:
           data["dise_code"]='-'
         else:
           data["dise_code"]=row[9]
+      data["status"]=row[10]
       cursor.execute(statements['get_school_address_info'],(id,))
       result = cursor.fetchall()
       data["address"]='-'
