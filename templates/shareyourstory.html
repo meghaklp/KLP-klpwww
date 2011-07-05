@@ -102,7 +102,13 @@ $def with (questions)
       <br/>
     <div id="commentheading"></div>
     <b>Comments:</b><br/>
-    <textarea name="comments" id="comments" style="width:80%" rows="5"></textarea>
+    <textarea name="comments" id="comments" style="width:80%" rows="5"
+    onKeyDown="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"
+    onKeyUp="textCounter(document.schoolform.comments,document.schoolform.remLen2,500)"></textarea>
+    <br/>
+    <input readonly type="text" name="remLen2" size="3" maxlength="3" value="500">
+    characters left
+
     <br/>
     <br/>
     <div id="photos">
