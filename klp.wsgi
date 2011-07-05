@@ -946,7 +946,7 @@ class postSYS:
          for k in form.inputs: 
            return "id = ", k.id
       count=0
-
+      sysid = None
       query="insert into tb_sys_data"
       qansquery = "insert into tb_sys_qans(sysid,qid,answer) values( %(sysid)s,%(qid)s,%(answer)s)"
       data={}
@@ -976,6 +976,9 @@ class postSYS:
         cursor.execute(qansquery,{'sysid':sysid,'qid':q,'answer':qdata[q]})
       connection.commit()
     except:
+      print >> sys.stderr, str(query)
+      print >> sys.stderr, "Questions:-"+str(qdata)
+      print >> sys.stderr, "Other:-"+str(data)
       traceback.print_exc(file=sys.stderr)
       connection.rollback()
    
